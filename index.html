@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram User Info</title>
+    <script async src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <h1>Информация о пользователе Telegram</h1>
+    
+    <p>Имя пользователя: <span id="userName">Загружается...</span></p>
+    <p>ID пользователя: <span id="userId">Загружается...</span></p>
+
+    <script>
+        window.Telegram.WebApp.ready();
+
+        // Получаем информацию о пользователе
+        const userName = window.Telegram.WebApp.initDataUnsafe?.user?.first_name || 'Неизвестно';
+        const userId = window.Telegram.WebApp.initDataUnsafe?.user?.id || 'Неизвестно';
+
+        // Выводим имя и ID пользователя на страницу
+        document.getElementById('userName').textContent = userName;
+        document.getElementById('userId').textContent = userId;
+    </script>
+</body>
+</html>

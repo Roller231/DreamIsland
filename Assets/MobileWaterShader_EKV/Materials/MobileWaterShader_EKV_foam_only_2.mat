@@ -9,8 +9,6 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: MobileWaterShader_EKV_foam_only_2
   m_Shader: {fileID: 4800000, guid: cac645c54d47a224c9b34364a0f004bd, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - FOAM
   - INVERT
@@ -23,7 +21,6 @@ Material:
   m_CustomRenderQueue: 3000
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -98,7 +95,7 @@ Material:
     - _DiffTex:
         m_Texture: {fileID: 2800000, guid: c303a54fa00412a43864cdfb529bb202, type: 3}
         m_Scale: {x: 10, y: 10}
-        m_Offset: {x: -0.13589276, y: -0.10871421}
+        m_Offset: {x: -0.00024, y: -0.00019199999}
     - _Diffuse:
         m_Texture: {fileID: 2800000, guid: aa701e5be2dbcd24aad4fb9c3ca284da, type: 3}
         m_Scale: {x: 500, y: 500}
@@ -142,7 +139,7 @@ Material:
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: a2356ab4a4fb5f74c83096735dc7dc9d, type: 3}
         m_Scale: {x: 1, y: 1}
-        m_Offset: {x: -0.09059518, y: -0.09059518}
+        m_Offset: {x: -0.00016, y: -0.00016}
     - _MainTexRing:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -518,4 +515,3 @@ Material:
     - _SpecularColor: {r: 0.5808823, g: 0.5808823, b: 0.5808823, a: 1}
     - _WaterFogColor: {r: 0.07155571, g: 0.07351371, b: 0.0754717, a: 0}
   m_BuildTextureStacks: []
-  m_AllowLocking: 1

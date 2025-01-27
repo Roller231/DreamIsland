@@ -270,9 +270,9 @@ Material:
     - _AlbedoContrast: 0.76
     - _AlbedoIntensity: 1.71
     - _Ambient: 0.2
-    - _Attenuation: 0.157
+    - _Attenuation: 0.46434805
     - _BLENDING: 1
-    - _Brightness: 35.1
+    - _Brightness: 1.6107186
     - _BumpReflectionStr: 0.5
     - _BumpScale: 1
     - _BumpValue: 0
@@ -373,7 +373,7 @@ Material:
     - _LowIntensity: 1
     - _MainDetailFlow: 0
     - _MainDetailScale: 3
-    - _MainTexRot: 124
+    - _MainTexRot: 132
     - _MediumTilingDistance: 0
     - _Metallic: 0.322
     - _MicrowaveScale: 1
@@ -448,7 +448,7 @@ Material:
     - _Saturation: 1
     - _SaturationRef: 0.5
     - _Shear: 1
-    - _Shininess: 0.059
+    - _Shininess: 0.81285185
     - _Size: 15
     - _Skew: 0.5
     - _SmoothnessTextureChannel: 0

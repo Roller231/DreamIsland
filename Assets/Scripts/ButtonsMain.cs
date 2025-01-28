@@ -70,7 +70,7 @@ namespace Pinwheel.Jupiter
                 Remy_night.SetActive(true);
                 Remy_day.SetActive(false);
             }
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(0.8f);
 
             changeTimeAnim.gameObject.SetActive(false);
 

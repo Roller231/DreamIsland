@@ -1,47 +1,79 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.ParticleSystemJobs;
 
-public class ButtonsMain : MonoBehaviour
+
+namespace Pinwheel.Jupiter
 {
-    private bool flipFlop_Day_night;
-
-    [SerializeField] private Material skybox_night;
-    [SerializeField] private Material skybox_day;
-
-    [SerializeField] private Animation changeTimeAnim;
-
-    public void ChangeTime()
+    public class ButtonsMain : MonoBehaviour
     {
-        changeTimeAnim.gameObject.SetActive(true);
-        changeTimeAnim.Play();
+        private bool flipFlop_Day_night;
 
-        StartCoroutine(PlayAnimChangeTime(1f));
-    }
+        [SerializeField] private GameObject Remy_night;
+        [SerializeField] private GameObject Remy_day;
 
-    IEnumerator PlayAnimChangeTime(float time)
-    {
-        yield return new WaitForSeconds(time);
+        [SerializeField] private JDayNightCycle ChangeScriptMaterial;
 
-        if (flipFlop_Day_night)
+        [SerializeField] private Animation changeTimeAnim;
+
+        public void ChangeTime()
         {
-            RenderSettings.skybox = skybox_day;
-            // Если нужно сразу применить изменения
-            DynamicGI.UpdateEnvironment();
-            flipFlop_Day_night = !flipFlop_Day_night;
+            changeTimeAnim.gameObject.SetActive(true);
+            changeTimeAnim.Play();
+            StartCoroutine(ChangeModelDelay());
+            if (flipFlop_Day_night)
+            {
+                // Смена на день
+                StartCoroutine(AnimateTimeChange(ChangeScriptMaterial.Time, 13.06f));
 
-        }
-        else
-        {
-            RenderSettings.skybox = skybox_night;
-            // Если нужно сразу применить изменения
-            DynamicGI.UpdateEnvironment();
+            }
+            else
+            {
+                // Смена на ночь
+                StartCoroutine(AnimateTimeChange(ChangeScriptMaterial.Time, 24f));
+
+            }
+
             flipFlop_Day_night = !flipFlop_Day_night;
         }
 
-        yield return new WaitForSeconds(time);
+        private IEnumerator AnimateTimeChange(float startTime, float targetTime)
+        {
+            float duration = 2f; // Время, за которое происходит смена времени (в секундах)
+            float elapsedTime = 0f;
 
+            while (elapsedTime < duration)
+            {
+                elapsedTime += Time.deltaTime;
+                ChangeScriptMaterial.Time = Mathf.Lerp(startTime, targetTime, elapsedTime / duration);
 
-        changeTimeAnim.gameObject.SetActive(false);
+                yield return null; // Ждем следующий кадр
+            }
 
+            ChangeScriptMaterial.Time = targetTime; // Убедимся, что значение точно равно конечному
+            
+        }
+
+        private IEnumerator ChangeModelDelay()
+        {
+
+            yield return new WaitForSeconds(1.3f);
+            if (!flipFlop_Day_night)
+            {
+                // Смена на день
+                Remy_night.SetActive(false);
+                Remy_day.SetActive(true);
+            }
+            else
+            {
+                // Смена на ночь
+                Remy_night.SetActive(true);
+                Remy_day.SetActive(false);
+            }
+            yield return new WaitForSeconds(1.5f);
+
+            changeTimeAnim.gameObject.SetActive(false);
+
+        }
     }
 }

@@ -97,7 +97,7 @@ MonoBehaviour:
   sunGlow: 0.45
   useBakedSun: 0
   sunCubemap: {fileID: 0}
-  sunLightColor: {r: 1, g: 0.99511117, b: 0.8632076, a: 1}
+  sunLightColor: {r: 1, g: 1, b: 1, a: 1}
   sunLightIntensity: 1
   enableMoon: 1
   moonTexture: {fileID: 0}
@@ -107,7 +107,7 @@ MonoBehaviour:
   moonGlow: 0.11
   useBakedMoon: 0
   moonCubemap: {fileID: 0}
-  moonLightColor: {r: 0.8431373, g: 0.9843138, b: 1, a: 1}
+  moonLightColor: {r: 0.8627451, g: 0.9889306, b: 1, a: 1}
   moonLightIntensity: 0.046027362
   customCloudTexture: {fileID: 0}
   enableHorizonCloud: 0
@@ -254,7 +254,7 @@ Material:
     - _HorizonColor: {r: 0.86733425, g: 0.9550698, b: 0.94980246, a: 1}
     - _MoonColor: {r: 1, g: 1, b: 1, a: 0}
     - _MoonDirection: {r: 0.30238426, g: 0.3404179, b: 0.8903255, a: 0}
-    - _MoonLightColor: {r: 0.8431373, g: 0.9843138, b: 1, a: 1}
+    - _MoonLightColor: {r: 0.8627451, g: 0.9889306, b: 1, a: 1}
     - _OverheadCloudColor: {r: 1, g: 1, b: 1, a: 0.98229885}
     - _SkyColor: {r: 0.3120619, g: 0.62996095, b: 0.90563637, a: 1}
     - _StarsColor0: {r: 0.96470594, g: 0.9450981, b: 0.76470596, a: 1}
@@ -262,7 +262,7 @@ Material:
     - _StarsColor2: {r: 0, g: 0.92549026, b: 1, a: 1}
     - _SunColor: {r: 0.9716981, g: 0.9224974, b: 0.8398261, a: 1}
     - _SunDirection: {r: -0.20913173, g: -0.5061458, b: -0.836708, a: 0}
-    - _SunLightColor: {r: 1, g: 0.99511117, b: 0.8632076, a: 1}
+    - _SunLightColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &8993251732621375409

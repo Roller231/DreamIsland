@@ -7,10 +7,11 @@ namespace Pinwheel.Jupiter
 {
     public class ButtonsMain : MonoBehaviour
     {
-        private bool flipFlop_Day_night;
+        public bool flipFlop_Day_night;
 
         [SerializeField] private GameObject Remy_night;
         [SerializeField] private GameObject Remy_day;
+        [SerializeField] private GameObject sun_light;
 
         [SerializeField] private JDayNightCycle ChangeScriptMaterial;
 
@@ -63,12 +64,15 @@ namespace Pinwheel.Jupiter
                 // —мена на день
                 Remy_night.SetActive(false);
                 Remy_day.SetActive(true);
+                sun_light.SetActive(true);
             }
             else
             {
                 // —мена на ночь
                 Remy_night.SetActive(true);
                 Remy_day.SetActive(false);
+                sun_light.SetActive(false);
+
             }
             yield return new WaitForSeconds(0.8f);
 

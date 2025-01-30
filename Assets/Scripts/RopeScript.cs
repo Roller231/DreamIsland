@@ -1,49 +1,57 @@
 using UnityEngine;
 
-[RequireComponent(typeof(LineRenderer))]
 public class RopeScript : MonoBehaviour
 {
-    [Header("Rope Settings")]
-    [SerializeField] private Transform TransPoint1;
-    [SerializeField] private Transform TransPoint2;
-    [SerializeField] private Transform BallPrefab;
+    [Header("Slingshot Settings")]
+    [SerializeField] private Transform slingOrigin;  // Точка, где рогатка держит снаряд
 
-    private LineRenderer _lineRenderer;
-    private Transform _newBall;
+    private Camera mainCamera;
+    private bool isTouching = false;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        _lineRenderer = GetComponent<LineRenderer>();
-        _lineRenderer.positionCount = 2;
+        mainCamera = Camera.main;  // Получаем основную камеру
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && _newBall == null)
+        if (Input.GetMouseButtonDown(0))  // Проверяем, если нажата ЛКМ или палец
         {
-            _newBall = Instantiate(BallPrefab, Vector3.zero, Quaternion.identity);
+            isTouching = true;
+            RotateObjectToTouch();  // Поворот объекта при первом касании
         }
-
-        if (_newBall)
+        else if (Input.GetMouseButton(0) && isTouching)  // Если ЛКМ зажата или палец на экране
         {
-            // Add 3rd Point in the Middle..
-            if (_lineRenderer.positionCount < 3)
-            {
-                _lineRenderer.positionCount = 3;
-            }
-
-            Vector3 newPos = _newBall.position;
-            newPos.z = -0.55f;
-            newPos.y = -0.6f;
-            _lineRenderer.SetPosition(1, newPos);
+            RotateObjectToTouch();  // Следование за движением пальца
         }
-
-        if (TransPoint1 && TransPoint2)
+        else if (Input.GetMouseButtonUp(0))  // Когда палец/ЛКМ отпущены
         {
-            _lineRenderer.SetPosition(0, TransPoint1.position);
-            _lineRenderer.SetPosition(_lineRenderer.positionCount - 1, TransPoint2.position);
+            isTouching = false;
+        }
+    }
+
+    private void RotateObjectToTouch()
+    {
+        // Получаем позицию мыши на экране
+        Vector3 mousePosition = Input.mousePosition;
+
+        // Преобразуем экранные координаты в мировые с помощью камеры
+        Ray ray = mainCamera.ScreenPointToRay(mousePosition);
+
+        RaycastHit hit;
+
+        // Отправляем луч и проверяем попадание
+        if (Physics.Raycast(ray, out hit))
+        {
+            // Получаем точку попадания
+            Vector3 targetPosition = hit.point;
+
+            // Поворот объекта в сторону попадания
+            Vector3 direction = targetPosition - slingOrigin.position;
+
+            // Вращение объекта с учетом всех осей
+            Quaternion rotation = Quaternion.LookRotation(-direction);
+            slingOrigin.rotation = rotation;  // Применяем вращение по всем осям
         }
     }
 }

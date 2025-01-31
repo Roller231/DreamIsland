@@ -52,10 +52,10 @@ Material:
     m_Ints: []
     m_Floats:
     - _Cutoff: 0.5
-    - _FresnelExp: 5
+    - _FresnelExp: 2.881356
     - _GradientPosition1: 2.3328786
     - _GradientPosition2: 2.5
-    - _LightColorIntensity: 1
+    - _LightColorIntensity: 0.309
     - _MainFoamIntensity: 4
     - _MainFoamOpacity: 0
     - _MainFoamScale: 80
@@ -83,11 +83,11 @@ Material:
     - _WavesIntensity: 0.8
     - _WavesSpeed: 1.48
     m_Colors:
-    - _DepthGradient1: {r: 0, g: 0.15293676, b: 0.3686228, a: 1}
-    - _DepthGradient2: {r: 0, g: 0.15445668, b: 0.36742696, a: 1}
-    - _DepthGradient3: {r: 0.017409164, g: 0.049704753, b: 0.16890901, a: 1}
-    - _FoamColor: {r: 0, g: 0.15276846, b: 0.36844525, a: 1}
-    - _FresnelColor: {r: 0, g: 0.37909028, b: 1, a: 1}
+    - _DepthGradient1: {r: 0, g: 0.31944624, b: 0.764151, a: 1}
+    - _DepthGradient2: {r: 0.9009434, g: 0.9418759, b: 1, a: 1}
+    - _DepthGradient3: {r: 0.017409164, g: 0.049606062, b: 0.16877669, a: 1}
+    - _FoamColor: {r: 0, g: 0.1526362, b: 0.3683057, a: 1}
+    - _FresnelColor: {r: 0.28311953, g: 0.516416, b: 0.8962264, a: 1}
     - _ShadowColor: {r: 0.009191178, g: 0.033871744, b: 0.125, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

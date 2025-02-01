@@ -242,7 +242,7 @@ Material:
     - _StarsTwinkle1: 6
     - _StarsTwinkle2: 2
     - _SunGlow: 0.45
-    - _SunLightIntensity: 0.6390164
+    - _SunLightIntensity: 4.8437347
     - _SunSize: 0.125
     - _SunSoftEdge: 0.5
     m_Colors:

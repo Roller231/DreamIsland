@@ -1,4 +1,5 @@
 using UnityEngine;
+using UTeleApp;
 
 public class RopeScript : MonoBehaviour
 {
@@ -8,13 +9,17 @@ public class RopeScript : MonoBehaviour
     [SerializeField] private GameObject projectilePrefab; // ������ �������
     [SerializeField] private float minForce = 5f; // ����������� ����
     [SerializeField] private float maxForce = 20f; // ������������ ����
+    [SerializeField] private AudioClip startRoping; // ������������ ����
+    [SerializeField] private AudioClip shoot; // ������������ ����
 
     private Camera mainCamera;
     private bool isTouching = false;
     private float touchDuration = 0f; // ����� �������
     private GameObject currentProjectile; // ������� ������
-    private Rigidbody projectileRigidbody;
+    [HideInInspector]
+    public Rigidbody projectileRigidbody;
     private Vector3 shootDirection; // ����������� ��������
+    private AudioSource audioSource; // ����������� ��������
 
     private Animator animator;
 
@@ -22,6 +27,9 @@ public class RopeScript : MonoBehaviour
     {
         mainCamera = Camera.main; // �������� �������� ������
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
+
+
     }
 
     private void Update()
@@ -33,6 +41,8 @@ public class RopeScript : MonoBehaviour
             SpawnProjectile(); // ������ ������
             CalculateShootDirection(); // ������������ ����������� ��������
             RotateObjectToTouch();
+            audioSource.clip = startRoping;
+            audioSource.Play();
             animator.SetBool("touch", true);
         }
         else if (Input.GetMouseButton(0) && isTouching) // ���������
@@ -47,6 +57,8 @@ public class RopeScript : MonoBehaviour
             ShootProjectile(); // ������������ ������
             animator.SetTrigger("shoot");
             animator.SetBool("touch", false);
+            audioSource.clip = shoot;
+            audioSource.Play();
         }
     }
 

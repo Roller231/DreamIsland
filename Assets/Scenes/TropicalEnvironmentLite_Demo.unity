@@ -255,6 +255,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WaterPlane
       objectReference: {fileID: 0}
+    - target: {fileID: 1517900040056248, guid: d0518394070180d479a27ec38709efc9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4215464231897044, guid: d0518394070180d479a27ec38709efc9, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.82950777
@@ -1088,7 +1092,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 1
-  m_Color: {r: 1, g: 0.8913772, b: 0.6367924, a: 1}
+  m_Color: {r: 1, g: 0.96879536, b: 0.79716986, a: 1}
   m_Intensity: 4.8437347
   m_Range: 10
   m_SpotAngle: 30
@@ -1134,7 +1138,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 2.7105058e-20, y: 1.92865e-39, z: 6.4297e-41, w: 0}
+  m_BoundingSphereOverride: {x: 1.3894e-41, y: 2.524355e-29, z: 0, w: -3.5755232e+15}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0

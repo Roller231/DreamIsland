@@ -1311,7 +1311,7 @@ MonoBehaviour:
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
-      ctime1: 21010
+      ctime1: 21395
       ctime2: 49537
       ctime3: 65535
       ctime4: 0
@@ -1319,7 +1319,7 @@ MonoBehaviour:
       ctime6: 0
       ctime7: 0
       atime0: 14649
-      atime1: 17155
+      atime1: 19275
       atime2: 50308
       atime3: 52235
       atime4: 0
@@ -1327,7 +1327,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_ColorSpace: -1
+      m_ColorSpace: 0
       m_NumColorKeys: 4
       m_NumAlphaKeys: 4
   - name: OverheadCloudRemapMin

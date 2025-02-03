@@ -126,16 +126,20 @@ public class RopeScript : MonoBehaviour
     {
         Vector3 mousePosition = Input.mousePosition;
 
-        // ����������� �������� ���������� � ������� � ������� ������
+        // Преобразование позиции мыши в мировые координаты через луч
         Ray ray = mainCamera.ScreenPointToRay(mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit))
         {
+            // Инвертируем направление, чтобы рогатка смотрела в противоположную сторону
             Vector3 targetPosition = hit.point;
-            Vector3 direction = targetPosition - slingOrigin.position;
-            Quaternion rotation = Quaternion.LookRotation(-direction);
+            Vector3 direction = targetPosition - slingOrigin.position; // Теперь направление от рогатки к точке нажатия
+            Quaternion rotation = Quaternion.LookRotation(-direction); // Инвертируем направление для поворота
             slingOrigin.rotation = rotation;
         }
     }
+
+
+
 }

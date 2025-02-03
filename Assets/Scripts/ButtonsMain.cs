@@ -33,6 +33,9 @@ namespace Pinwheel.Jupiter
         private float moveDuration = 2f;
         private float moveStartTime;
 
+        [Header("Monkey Games")]
+        [SerializeField] EnemyWaveSpawner EnemyWaveSpawner;
+
         private void Start()
         {
             TelegramWebApp.Ready();
@@ -162,11 +165,12 @@ namespace Pinwheel.Jupiter
         public void DayGame()
         {
 
+
             PanelMain.SetActive(false);
             PanelGameDay.SetActive(true );
 
             slipobject.SetActive(true);
-            
+            EnemyWaveSpawner.StartWavesFunc();
             StartCameraMove(new Vector3(-6.72f, -5.75f, 1.96f), new Vector3(357.77f, 285.10f, 0f), 2f);
         }
 
@@ -177,7 +181,15 @@ namespace Pinwheel.Jupiter
             PanelGameDay.SetActive(false);
 
             slipobject.SetActive(false);
-            Destroy(slipobject.GetComponent<RopeScript>().projectileRigidbody.gameObject);
+            try
+            {
+                Destroy(slipobject.GetComponent<RopeScript>().projectileRigidbody.gameObject);
+            }
+            catch (Exception e) {
+                }
+
+            EnemyWaveSpawner.health = 3;
+            EnemyWaveSpawner.GetDamage(0);
             StartCameraMove(new Vector3(-0.85f, -2.25f, -6.69f), new Vector3(357.774f, 0, 0), 2f);
         }
 

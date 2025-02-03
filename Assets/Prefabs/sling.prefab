@@ -1044,6 +1044,7 @@ GameObject:
   - component: {fileID: 8682427264365480005}
   - component: {fileID: 8992859162767616165}
   - component: {fileID: 8355136687343400641}
+  - component: {fileID: 7260686703465425416}
   m_Layer: 0
   m_Name: sling
   m_TagString: Untagged
@@ -1102,7 +1103,7 @@ MonoBehaviour:
   bulletOrigin: {fileID: 8693305337659494942}
   projectilePrefab: {fileID: 3205889720224719467, guid: ed0c0f1f0a0035d439aeef2327372386, type: 3}
   minForce: 5
-  maxForce: 100
+  maxForce: 170
   startRoping: {fileID: 8300000, guid: 13c15ade9d6bcd449a0450c4cef2a3d9, type: 3}
   shoot: {fileID: 8300000, guid: 1052aec97ee70be4b8f840eb89f7f783, type: 3}
   projectileRigidbody: {fileID: 0}
@@ -1225,6 +1226,24 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7260686703465425416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4716480676623683445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8113289625c732343b75fd831e174848, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemies: []
+  startWaveTime: 5
+  minWaveTime: 1
+  enemiesPerWave: 1
+  wavesToIncreaseEnemies: 10
+  waveTimeDecrement: 0.5
 --- !u!1 &5731820510546185286
 GameObject:
   m_ObjectHideFlags: 0

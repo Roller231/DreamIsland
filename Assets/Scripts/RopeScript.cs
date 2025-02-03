@@ -95,7 +95,7 @@ public class RopeScript : MonoBehaviour
             projectileRigidbody.AddForce(shootDirection.normalized * force, ForceMode.Impulse); // ��������� ����
 
             // ������� ������ ����� 3 �������
-            Destroy(currentProjectile, 3f);
+            Destroy(currentProjectile, 5f);
 
             // ���������� ������� ������
             currentProjectile = null;
@@ -132,6 +132,7 @@ public class RopeScript : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit))
         {
+            if (hit.collider.gameObject.tag == "Bullet") return;
             // Инвертируем направление, чтобы рогатка смотрела в противоположную сторону
             Vector3 targetPosition = hit.point;
             Vector3 direction = targetPosition - slingOrigin.position; // Теперь направление от рогатки к точке нажатия

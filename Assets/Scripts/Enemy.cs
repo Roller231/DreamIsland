@@ -5,18 +5,29 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private AudioClip clipOnDie;
     [SerializeField] private AudioClip clipOnFalse;
+    [SerializeField] private AudioClip clipMonkey;
 
+    private GameManager gameManager;
+
+    private void Start()
+    {
+
+    }
 
     private void OnEnable()
     {
         StartCoroutine(goBack());
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        gameManager.GetComponent<AudioSource>().clip = clipMonkey;
+        gameManager.GetComponent<AudioSource>().Play();
     }
 
     public void Die()
     {
-        GameObject.Find("GameManager").GetComponent<GameManager>().monkeyCount++;
-        GameObject.Find("GameManager").GetComponent<AudioSource>().clip = clipOnDie;
-        GameObject.Find("GameManager").GetComponent<AudioSource>().Play();
+        gameManager.monkeyCount++;
+        gameManager.GetComponent<AudioSource>().clip = clipOnDie;
+        gameManager.GetComponent<AudioSource>().Play();
         gameObject.SetActive(false);
     }
 
@@ -24,10 +35,12 @@ public class Enemy : MonoBehaviour
     {
         yield return new WaitForSeconds(5f);
 
-        GameObject.Find("GameManager").GetComponent<AudioSource>().clip = clipOnFalse;
-        GameObject.Find("GameManager").GetComponent<AudioSource>().Play();
+        gameManager.GetComponent<AudioSource>().clip = clipOnFalse;
+        gameManager.GetComponent<AudioSource>().Play();
         GameObject.Find("sling").GetComponent<EnemyWaveSpawner>().GetDamage(1);
         gameObject.SetActive(false );
 
     }
+
+    
 }

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UTeleApp;
 
@@ -95,7 +96,7 @@ public class RopeScript : MonoBehaviour
             projectileRigidbody.AddForce(shootDirection.normalized * force, ForceMode.Impulse); // ��������� ����
 
             // ������� ������ ����� 3 �������
-            Destroy(currentProjectile, 5f);
+            //StartCoroutine(DestroyMiss());
 
             // ���������� ������� ������
             currentProjectile = null;
@@ -139,6 +140,15 @@ public class RopeScript : MonoBehaviour
             Quaternion rotation = Quaternion.LookRotation(-direction); // Инвертируем направление для поворота
             slingOrigin.rotation = rotation;
         }
+    }
+
+    IEnumerator DestroyMiss()
+    {
+        yield return new WaitForSeconds(4);
+
+        GetComponent<EnemyWaveSpawner>().GetDamage(1);
+
+        Destroy(currentProjectile);
     }
 
 

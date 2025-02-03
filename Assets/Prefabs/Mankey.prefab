@@ -1460,6 +1460,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clipOnDie: {fileID: 8300000, guid: 8f07fcc368414784a819a209a90311a2, type: 3}
   clipOnFalse: {fileID: 8300000, guid: f961a8a7e20403d4081e303f1bbc967d, type: 3}
+  clipMonkey: {fileID: 8300000, guid: 36f5993ce6f530d429a47842bc4691ab, type: 3}
 --- !u!1 &4008444843969063173
 GameObject:
   m_ObjectHideFlags: 0

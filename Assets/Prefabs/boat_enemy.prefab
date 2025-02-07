@@ -120,7 +120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clipOnDie: {fileID: 8300000, guid: 8f07fcc368414784a819a209a90311a2, type: 3}
   clipOnFalse: {fileID: 8300000, guid: f961a8a7e20403d4081e303f1bbc967d, type: 3}
-  clipMonkey: {fileID: 8300000, guid: 36f5993ce6f530d429a47842bc4691ab, type: 3}
+  clipMonkey: {fileID: 8300000, guid: e3cda3862f5a8614cb262d778430448c, type: 3}
   timeToBack: 15
 --- !u!1 &5296078582791572823
 GameObject:

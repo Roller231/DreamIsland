@@ -24,9 +24,10 @@ public class Enemy : MonoBehaviour
         gameManager.GetComponent<AudioSource>().Play();
     }
 
-    public void Die(bool set_or_anim)
+    public void Die(bool game)
     {
-        gameManager.monkeyCount++;
+        if(game) gameManager.monkeyCount++;
+        else gameManager.pirateCount++;
         gameManager.GetComponent<AudioSource>().clip = clipOnDie;
         gameManager.GetComponent<AudioSource>().Play();
         //if(set_or_anim) gameObject.SetActive(false);

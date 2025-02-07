@@ -22,6 +22,7 @@ namespace Pinwheel.Jupiter
         [SerializeField] private GameObject PanelMain;
         [SerializeField] private GameObject PanelGameDay;
         [SerializeField] private GameObject slipobject;
+        [SerializeField] private GameObject slipobjectBig;
 
         [Header("Camera Movement")]
         [SerializeField] private Transform cameraTransform;  // Ссылка на камеру
@@ -35,11 +36,12 @@ namespace Pinwheel.Jupiter
 
         [Header("Monkey Games")]
         [SerializeField] EnemyWaveSpawner EnemyWaveSpawner;
+        [SerializeField] EnemyWaveSpawner EnemyWaveSpawnerNight;
 
         private void Start()
         {
-            TelegramWebApp.Ready();
-            init.text = GetUserIdFromInitData( TelegramWebApp.InitData).ToString();
+            //TelegramWebApp.Ready();
+            //init.text = GetUserIdFromInitData( TelegramWebApp.InitData).ToString();
         }
 
         public static long GetUserIdFromInitData(string initData)
@@ -162,6 +164,18 @@ namespace Pinwheel.Jupiter
             }
         }
 
+        public void ExitButton()
+        {
+            if (!flipFlop_Day_night)
+            {
+                DayGameEXIT();
+            }
+            else
+            {
+                NightGameEXIT();
+            }
+        }
+
         public void DayGame()
         {
 
@@ -196,6 +210,32 @@ namespace Pinwheel.Jupiter
         public void NightGame()
         {
             // Здесь можно добавить функционал для ночной игры
+            PanelMain.SetActive(false);
+            PanelGameDay.SetActive(true);
+
+            slipobjectBig.SetActive(true);
+            EnemyWaveSpawnerNight.StartWavesFunc();
+            StartCameraMove(new Vector3(16.93f, -1.97f, 0.469f), new Vector3(357.774f, 0f, 0f), 2f);
+        }
+
+        public void NightGameEXIT()
+        {
+
+            PanelMain.SetActive(true);
+            PanelGameDay.SetActive(false);
+
+            slipobjectBig.SetActive(false);
+            try
+            {
+                Destroy(slipobjectBig.GetComponent<RopeBigScript>().projectileRigidbody.gameObject);
+            }
+            catch (Exception e)
+            {
+            }
+
+            EnemyWaveSpawnerNight.health = 3;
+            EnemyWaveSpawnerNight.GetDamage(0);
+            StartCameraMove(new Vector3(-0.85f, -2.25f, -6.69f), new Vector3(357.774f, 0, 0), 2f);
         }
 
         // Функция для начала движения камеры

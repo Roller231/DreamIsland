@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private AudioClip clipOnDie;
     [SerializeField] private AudioClip clipOnFalse;
     [SerializeField] private AudioClip clipMonkey;
+    [SerializeField] private float timeToBack;
 
     private GameManager gameManager;
 
@@ -18,22 +19,33 @@ public class Enemy : MonoBehaviour
     {
         StartCoroutine(goBack());
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-
+        GetComponent<Animator>().SetTrigger("Start");
         gameManager.GetComponent<AudioSource>().clip = clipMonkey;
         gameManager.GetComponent<AudioSource>().Play();
     }
 
-    public void Die()
+    public void Die(bool set_or_anim)
     {
         gameManager.monkeyCount++;
         gameManager.GetComponent<AudioSource>().clip = clipOnDie;
         gameManager.GetComponent<AudioSource>().Play();
-        gameObject.SetActive(false);
+        //if(set_or_anim) gameObject.SetActive(false);
+        GetComponent<Animator>().SetTrigger("Die");
+        StartCoroutine(activationSet());
+
+
+    }
+
+    IEnumerator activationSet()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        gameObject.SetActive(false );
     }
 
     private IEnumerator goBack()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(timeToBack);
 
         gameManager.GetComponent<AudioSource>().clip = clipOnFalse;
         gameManager.GetComponent<AudioSource>().Play();

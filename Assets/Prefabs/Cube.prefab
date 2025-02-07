@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 829709257451606227}
   - component: {fileID: 8554460387914854837}
   - component: {fileID: 5969205478745578392}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Bullet
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.68
+  m_Radius: 0.94
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5969205478745578392
 MonoBehaviour:
@@ -150,3 +150,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clipOnFalse: {fileID: 8300000, guid: f961a8a7e20403d4081e303f1bbc967d, type: 3}
+  windStrength: 0
+  windChangeInterval: 0

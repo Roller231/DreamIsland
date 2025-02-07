@@ -94,6 +94,10 @@ public class EnemyWaveSpawner : MonoBehaviour
         {
             e.SetActive(false);
         }
+
+        currentWave = 0;
+        currentWaveTime = startWaveTime;
+        enemiesPerWave = 1;
     }
 
     public void GetDamage(int health)

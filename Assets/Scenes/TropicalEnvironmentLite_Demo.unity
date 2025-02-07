@@ -1630,7 +1630,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 3.463e-42, y: 2.524355e-29, z: 0, w: 3172.3918}
+  m_BoundingSphereOverride: {x: 1.7385e-41, y: 2.524355e-29, z: 0, w: 6.3449385e-19}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -9513,6 +9513,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2116507728}
   - component: {fileID: 2116507730}
+  - component: {fileID: 2116507731}
   m_Layer: 0
   m_Name: Terrain (1)
   m_TagString: Untagged
@@ -9575,6 +9576,26 @@ Terrain:
   m_EnableHeightmapRayTracing: 1
   m_EnableTreesAndDetailsRayTracing: 0
   m_TreeMotionVectorModeOverride: 3
+--- !u!154 &2116507731
+TerrainCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2116507727}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_TerrainData: {fileID: 15600000, guid: 201ae53425bc15a4f9971889cfdc1641, type: 2}
+  m_EnableTreeColliders: 1
 --- !u!1 &2128946826
 GameObject:
   m_ObjectHideFlags: 0

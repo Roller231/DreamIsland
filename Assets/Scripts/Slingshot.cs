@@ -38,6 +38,12 @@ public class Slingshot : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        // Очистка при деактивации объекта
+        DestroyProjectileAndReset();
+    }
+
     private void StartDrag()
     {
         Vector3 mousePosition = GetMouseWorldPosition();
@@ -51,6 +57,8 @@ public class Slingshot : MonoBehaviour
 
     private void Drag()
     {
+        if (currentProjectile == null) return;
+
         Vector3 mousePosition = GetMouseWorldPosition();
 
         // Ограничиваем натяжение
@@ -80,6 +88,19 @@ public class Slingshot : MonoBehaviour
 
             currentProjectile = null;
         }
+    }
+
+    private void DestroyProjectileAndReset()
+    {
+        // Удаляем снаряд, если он существует
+        if (currentProjectile != null)
+        {
+            Destroy(currentProjectile.gameObject);
+            currentProjectile = null;
+        }
+
+        // Сбрасываем резинки
+        ResetRubberBands();
     }
 
     private void UpdateRubberBands(Vector3 projectilePosition)

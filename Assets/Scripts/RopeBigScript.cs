@@ -37,41 +37,41 @@ public class RopeBigScript : MonoBehaviour
             {
                 isTouching = true;
                 touchDuration = 0f; // Сбрасываем время натяжения
-                SpawnProjectile(); // Создаём снаряд
-                RotateObjectToTouch();
+                //SpawnProjectile(); // Создаём снаряд
+                //RotateObjectToTouch();
                 audioSource.clip = startRoping;
                 audioSource.Play();
-                animator.SetBool("touch", true);
+                //animator.SetBool("touch", true);
             }
             else
             {
                 // Удаляем текущий объект, если он уже был создан
-                DestroyCurrentProjectile();
+                //DestroyCurrentProjectile();
             }
         }
         else if (Input.GetMouseButton(0) && isTouching) // Удержание
         {
             touchDuration += Time.deltaTime; // Увеличиваем время натяжения
-            RotateObjectToTouch();
-            CalculateShootDirection(); // Обновляем направление
+            //RotateObjectToTouch();
+            //CalculateShootDirection(); // Обновляем направление
         }
         else if (Input.GetMouseButtonUp(0)) // Отпускание
         {
             if (isTouching)
             {
                 isTouching = false;
-                ShootProjectile(); // Выстрел
-                animator.SetTrigger("shoot");
+                //ShootProjectile(); // Выстрел
+                //animator.SetTrigger("shoot");
                 audioSource.clip = shoot;
                 audioSource.Play();
             }
             else
             {
                 // Если не стреляет, удаляем текущий снаряд
-                DestroyCurrentProjectile();
+                //DestroyCurrentProjectile();
             }
 
-            animator.SetBool("touch", false);
+            //animator.SetBool("touch", false);
         }
     }
 

@@ -215,7 +215,7 @@ namespace Pinwheel.Jupiter
 
             slipobjectBig.SetActive(true);
             EnemyWaveSpawnerNight.StartWavesFunc();
-            StartCameraMove(new Vector3(16.93f, -1.97f, 0.469f), new Vector3(357.774f, 0f, 0f), 2f);
+            StartCameraMove(new Vector3(16.929f, -2.119f, -3.27f), new Vector3(357.774f, 0f, 0f), 2f);
         }
 
         public void NightGameEXIT()

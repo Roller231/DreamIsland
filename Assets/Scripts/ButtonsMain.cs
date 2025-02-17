@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UTeleApp;
@@ -10,9 +11,17 @@ namespace Pinwheel.Jupiter
     {
         public bool flipFlop_Day_night;
 
+        [Header("GenderCheck")]
+        public bool Mail_Femail;
+        public GameObject GenderPanel;
+
+        
+
         [Header("Change Time")]
         [SerializeField] private GameObject Remy_night;
         [SerializeField] private GameObject Remy_day;
+        [SerializeField] private GameObject Female_day;
+        [SerializeField] private GameObject Female_night;
         [SerializeField] private GameObject sun_light;
         [SerializeField] private JDayNightCycle ChangeScriptMaterial;
         [SerializeField] private Animation changeTimeAnim;
@@ -38,10 +47,48 @@ namespace Pinwheel.Jupiter
         [SerializeField] EnemyWaveSpawner EnemyWaveSpawner;
         [SerializeField] EnemyWaveSpawner EnemyWaveSpawnerNight;
 
+        [Header("Skins Change")]
+        [SerializeField] private GameObject panelSkinsMale;
+        [SerializeField] private GameObject panelSkinsFemale;
+
+        [SerializeField] private List<GameObject> SkinsMaleObjects;
+        [SerializeField] private List<GameObject> SkinsMaleObjectsNight;
+        [SerializeField] private List<GameObject> SkinsFemaleObjects;
+        [SerializeField] private List<GameObject> SkinsFemaleObjectsNight;
+        [SerializeField] public int skinId;
+
+
         private void Start()
         {
             //TelegramWebApp.Ready();
             //init.text = GetUserIdFromInitData( TelegramWebApp.InitData).ToString();
+
+            GenderPanel.SetActive(true);
+
+        }
+
+        public void SetGender(bool gender)
+        {
+            Mail_Femail = gender;
+
+            if (!Mail_Femail)
+            {
+                //Remy_night.SetActive(false);
+                //Remy_day.SetActive(true);
+
+                panelSkinsMale.SetActive(true);
+            }
+            else
+            {
+                //Female_night.SetActive(false);
+                //Female_day.SetActive(true);
+
+                panelSkinsFemale.SetActive(true);
+
+            }
+
+            GenderPanel.SetActive(false);
+
         }
 
         public static long GetUserIdFromInitData(string initData)
@@ -137,14 +184,31 @@ namespace Pinwheel.Jupiter
             yield return new WaitForSeconds(1.3f);
             if (!flipFlop_Day_night)
             {
-                Remy_night.SetActive(false);
-                Remy_day.SetActive(true);
+                if (!Mail_Femail)
+                {
+                    Remy_night.SetActive(false);
+                    Remy_day.SetActive(true);
+                }
+                else
+                {
+                    Female_night.SetActive(false);
+                    Female_day.SetActive(true);
+                }
+
                 sun_light.SetActive(true);
             }
             else
             {
-                Remy_night.SetActive(true);
-                Remy_day.SetActive(false);
+                if (!Mail_Femail)
+                {
+                    Remy_night.SetActive(true);
+                    Remy_day.SetActive(false);
+                }
+                else
+                {
+                    Female_night.SetActive(true);
+                    Female_day.SetActive(false);
+                }
                 sun_light.SetActive(false);
             }
             yield return new WaitForSeconds(0.8f);
@@ -246,6 +310,76 @@ namespace Pinwheel.Jupiter
             moveDuration = duration / moveSpeed;  // Умножаем на moveSpeed для регулировки скорости
             moveStartTime = Time.time;
             isMovingCamera = true;
+        }
+
+        public void SetSkin(int id)
+        {
+            if (!Mail_Femail)
+            {
+
+                foreach (var obj in SkinsMaleObjects)
+                {
+                    obj.SetActive(false);
+                }
+                foreach (var obj in SkinsMaleObjectsNight)
+                {
+                    obj.SetActive(false);
+                }
+
+                if (!flipFlop_Day_night)
+                {
+                    SkinsMaleObjects[id].SetActive(true);
+
+                }
+                else
+                {
+                    SkinsMaleObjectsNight[id].SetActive(true);
+                }
+
+                Remy_day = SkinsMaleObjects[id];
+                Remy_night = SkinsMaleObjectsNight[id];
+
+                skinId = id;
+
+            }
+            else
+            {
+                foreach (var obj in SkinsFemaleObjects)
+                {
+                    obj.SetActive(false);
+                }
+                foreach (var obj in SkinsFemaleObjectsNight)
+                {
+                    obj.SetActive(false);
+                }
+
+                if (!flipFlop_Day_night)
+                {
+                    SkinsFemaleObjects[id].SetActive(true);
+                }
+                else
+                {
+                    SkinsFemaleObjectsNight[id].SetActive(true);
+                }
+
+                Female_day = SkinsFemaleObjects[id];
+                Female_night = SkinsFemaleObjectsNight[id];
+
+                skinId = id;
+            }
+        }
+
+        public void OpenShopBtn()
+        {
+            if (!Mail_Femail)
+            {
+                panelSkinsMale.SetActive(true);
+            }
+            else
+            {
+                panelSkinsFemale.SetActive(true);
+            }
+
         }
 
         // Обновление камеры

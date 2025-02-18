@@ -11233,7 +11233,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 3.1491e-41, y: 2.524355e-29, z: 0, w: 6.8877e-41}
+  m_BoundingSphereOverride: {x: 4.197e-42, y: 2.524355e-29, z: 0, w: -2.9540658e-33}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -46687,6 +46687,7 @@ GameObject:
   - component: {fileID: 1275193038}
   - component: {fileID: 1275193040}
   - component: {fileID: 1275193039}
+  - component: {fileID: 1275193041}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -46822,6 +46823,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1275193041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1275193037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6be04fd48ad795e45adaab9d17ce57c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1275808269
 GameObject:
   m_ObjectHideFlags: 0

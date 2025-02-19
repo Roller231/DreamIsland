@@ -14,7 +14,7 @@ namespace Pinwheel.Jupiter
         [Header("GenderCheck")]
         public bool Mail_Femail;
         public GameObject GenderPanel;
-
+        public bool isFirstGame = true;
         
 
         [Header("Change Time")]
@@ -57,13 +57,41 @@ namespace Pinwheel.Jupiter
         [SerializeField] private List<GameObject> SkinsFemaleObjectsNight;
         [SerializeField] public int skinId;
 
+        [Header("DB DATA")]
+        [SerializeField] private MySQLConnectorTG MySQLConnectorTG;
+        [SerializeField] private GameManager gameManager;
+
 
         private void Start()
         {
+
+            StartCoroutine(StartCor());
+        }
+
+
+        private IEnumerator StartCor()
+        {
+            yield return new WaitUntil(() => MySQLConnectorTG.isInitialized);
+
+            isFirstGame = MySQLConnectorTG.loadedIsFirstGame;
+
+
             //TelegramWebApp.Ready();
             //init.text = GetUserIdFromInitData( TelegramWebApp.InitData).ToString();
+            if (isFirstGame)
+            {
+                GenderPanel.SetActive(true);
+            }
+            else
+            {
+                Mail_Femail = MySQLConnectorTG.loadedIsMale;
 
-            GenderPanel.SetActive(true);
+
+
+                skinId = MySQLConnectorTG.loadedSkinId;
+                SetSkin(skinId);
+
+            }
 
         }
 
@@ -71,7 +99,11 @@ namespace Pinwheel.Jupiter
         {
             Mail_Femail = gender;
 
-            if (!Mail_Femail)
+            isFirstGame = false;
+            StartCoroutine(MySQLConnectorTG.UpdateUserData(MySQLConnectorTG.userId, gameManager.pirateCount, gameManager.monkeyCount, Mail_Femail, skinId, false));
+
+
+            if (Mail_Femail)
             {
                 //Remy_night.SetActive(false);
                 //Remy_day.SetActive(true);
@@ -184,7 +216,7 @@ namespace Pinwheel.Jupiter
             yield return new WaitForSeconds(1.3f);
             if (!flipFlop_Day_night)
             {
-                if (!Mail_Femail)
+                if (Mail_Femail)
                 {
                     Remy_night.SetActive(false);
                     Remy_day.SetActive(true);
@@ -199,7 +231,7 @@ namespace Pinwheel.Jupiter
             }
             else
             {
-                if (!Mail_Femail)
+                if (Mail_Femail)
                 {
                     Remy_night.SetActive(true);
                     Remy_day.SetActive(false);
@@ -238,6 +270,9 @@ namespace Pinwheel.Jupiter
             {
                 NightGameEXIT();
             }
+
+                        StartCoroutine(MySQLConnectorTG.UpdateUserData(MySQLConnectorTG.userId, gameManager.pirateCount, gameManager.monkeyCount, Mail_Femail, skinId, false));
+
         }
 
         public void DayGame()
@@ -314,7 +349,7 @@ namespace Pinwheel.Jupiter
 
         public void SetSkin(int id)
         {
-            if (!Mail_Femail)
+            if (Mail_Femail)
             {
 
                 foreach (var obj in SkinsMaleObjects)
@@ -367,11 +402,15 @@ namespace Pinwheel.Jupiter
 
                 skinId = id;
             }
+
+
+            StartCoroutine(MySQLConnectorTG.UpdateUserData(MySQLConnectorTG.userId, gameManager.pirateCount, gameManager.monkeyCount, Mail_Femail, skinId, false));
+
         }
 
         public void OpenShopBtn()
         {
-            if (!Mail_Femail)
+            if (Mail_Femail)
             {
                 panelSkinsMale.SetActive(true);
             }

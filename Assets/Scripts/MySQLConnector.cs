@@ -1,34 +1,38 @@
 ﻿using System;
-using MySql.Data.MySqlClient;
+using System.Collections;
 using UnityEngine;
-using UTeleApp;
+using UnityEngine.Networking;
+using UnityEngine.UI;
+using UTeleApp; // если используется Telegram API
 
-public class MySQLConnector : MonoBehaviour
+public class MySQLConnectorTG : MonoBehaviour
 {
-    private string connectionString = "Server=lelyim7e.beget.tech;Database=lelyim7e_nixzord;User ID=lelyim7e_nixzord;Password=141722A!a;Port=3306;Pooling=false;Charset=utf8mb4;";
-    private MySqlConnection connection;
+    [SerializeField] private Text idTG;
+    // Базовый URL вашего API (убедитесь, что он доступен по HTTPS!)
+    private string baseUrl = "https://nixzord.online/api/";
+    // Для тестирования задаем userId, в реальном проекте получайте его из TelegramWebApp.InitData
+    public string userId = "1";
+
+    // Поля для хранения загруженных данных
+    public int loadedPirateCoins;
+    public int loadedMonkeyCoins;
+    public bool loadedIsMale;
+    public int loadedSkinId;
+    public bool loadedIsFirstGame;
+
+    // Флаг, показывающий, что данные инициализированы
+    public bool isInitialized { get; private set; } = false;
 
     private void Awake()
     {
         TelegramWebApp.Ready();
-        string userId = GetUserIdFromInitData(TelegramWebApp.InitData).ToString();
+        userId = GetUserIdFromInitData(TelegramWebApp.InitData).ToString();
 
-        if (IsConnected())
-        {
-            if (UserExists(userId))
-            {
-                LoadUserData(userId);
-            }
-            else
-            {
-                CreateUser(userId);
-            }
-        }
-        else
-        {
-            Debug.LogWarning("⚠️ Подключение к БД не удалось. Функции базы данных отключены.");
-        }
+        idTG.text = userId;
+        StartCoroutine(InitializeUser());
     }
+
+
 
     public static long GetUserIdFromInitData(string initData)
     {
@@ -85,162 +89,160 @@ public class MySQLConnector : MonoBehaviour
         }
     }
 
-    private bool IsConnected()
+
+    private IEnumerator InitializeUser()
     {
-        try
+        yield return StartCoroutine(UserExists(userId, exists =>
         {
-            connection = new MySqlConnection(connectionString);
-            connection.Open();
-            connection.Close();
-            return true;
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError("❌ Ошибка подключения к MySQL: " + ex.Message);
-            return false;
-        }
+            if (exists)
+            {
+                StartCoroutine(LoadUserData(userId));
+            }
+            else
+            {
+                StartCoroutine(CreateUser(userId));
+            }
+        }));
     }
 
-    private bool UserExists(string id)
+    // Проверка существования пользователя через API
+    private IEnumerator UserExists(string id, Action<bool> callback)
     {
-        try
+        string url = baseUrl + "user_exists.php?id=" + id;
+        UnityWebRequest request = UnityWebRequest.Get(url);
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
         {
-            connection = new MySqlConnection(connectionString);
-            connection.Open();
-            string query = "SELECT COUNT(*) FROM users WHERE id = @id";
-            using (MySqlCommand cmd = new MySqlCommand(query, connection))
+            try
             {
-                cmd.Parameters.AddWithValue("@id", id);
-                int count = Convert.ToInt32(cmd.ExecuteScalar());
-                return count > 0;
+                UserExistsResponse response = JsonUtility.FromJson<UserExistsResponse>(request.downloadHandler.text);
+                callback(response.exists);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("Ошибка парсинга ответа: " + ex.Message);
+                callback(false);
             }
         }
-        catch (Exception ex)
+        else
         {
-            Debug.LogError("❌ Ошибка при проверке пользователя: " + ex.Message);
-            return false;
-        }
-        finally
-        {
-            if (connection != null && connection.State == System.Data.ConnectionState.Open)
-                connection.Close();
+            Debug.LogError("Ошибка запроса UserExists: " + request.error);
+            callback(false);
         }
     }
 
-    public void CreateUser(string id)
+    [Serializable]
+    private class UserExistsResponse
     {
-        try
-        {
-            connection = new MySqlConnection(connectionString);
-            connection.Open();
-            string query = @"INSERT INTO users (id, pirateCoins, monkeyCoins, isMale, skinId, isFirstGame) 
-                            VALUES (@id, 0, 0, true, 0, true)";
+        public bool exists;
+    }
 
-            using (MySqlCommand cmd = new MySqlCommand(query, connection))
-            {
-                cmd.Parameters.AddWithValue("@id", id);
-                cmd.ExecuteNonQuery();
-                Debug.Log($"✅ Новый пользователь {id} создан в БД!");
-            }
-        }
-        catch (Exception ex)
+    // Создание пользователя через API
+    public IEnumerator CreateUser(string id)
+    {
+        string url = baseUrl + "create_user.php";
+        WWWForm form = new WWWForm();
+        form.AddField("id", id);
+
+        UnityWebRequest request = UnityWebRequest.Post(url, form);
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
         {
-            Debug.LogError("❌ Ошибка при создании пользователя: " + ex.Message);
+            Debug.Log("✅ " + request.downloadHandler.text);
+            // После создания можно сразу загрузить данные
+            StartCoroutine(LoadUserData(id));
         }
-        finally
+        else
         {
-            if (connection != null && connection.State == System.Data.ConnectionState.Open)
-                connection.Close();
+            Debug.LogError("❌ Ошибка при создании пользователя: " + request.error);
         }
     }
 
-    public void LoadUserData(string id)
+    // Загрузка данных пользователя через API с разбором JSON-ответа
+    public IEnumerator LoadUserData(string id)
     {
-        try
-        {
-            connection = new MySqlConnection(connectionString);
-            connection.Open();
-            string query = "SELECT pirateCoins, monkeyCoins, isMale, skinId, isFirstGame FROM users WHERE id = @id LIMIT 1";
+        string url = baseUrl + "load_user_data.php?id=" + id;
+        UnityWebRequest request = UnityWebRequest.Get(url);
+        yield return request.SendWebRequest();
 
-            using (MySqlCommand cmd = new MySqlCommand(query, connection))
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            Debug.Log("✅ Данные пользователя (сырой ответ): " + request.downloadHandler.text);
+
+            try
             {
-                cmd.Parameters.AddWithValue("@id", id);
-                using (MySqlDataReader reader = cmd.ExecuteReader())
+                UserDataResponse response = JsonUtility.FromJson<UserDataResponse>(request.downloadHandler.text);
+                if (response.success)
                 {
-                    if (reader.Read())
-                    {
-                        int pirateCoins = reader.GetInt32("pirateCoins");
-                        int monkeyCoins = reader.GetInt32("monkeyCoins");
-                        bool isMale = reader.GetBoolean("isMale");
-                        int skinId = reader.GetInt32("skinId");
-                        bool isFirstGame = reader.GetBoolean("isFirstGame");
+                    loadedPirateCoins = response.data.pirateCoins;
+                    loadedMonkeyCoins = response.data.monkeyCoins;
+                    loadedIsMale = response.data.isMale;
+                    loadedSkinId = response.data.skinId;
+                    loadedIsFirstGame = response.data.isFirstGame;
 
-                        Debug.Log($"✅ Данные пользователя загружены: pirateCoins={pirateCoins}, monkeyCoins={monkeyCoins}, isMale={isMale}, skinId={skinId}, isFirstGame={isFirstGame}");
-                    }
-                    else
-                    {
-                        Debug.LogWarning("⚠️ Пользователь не найден в БД!");
-                    }
+                    Debug.Log($"Загруженные данные: pirateCoins = {loadedPirateCoins}, monkeyCoins = {loadedMonkeyCoins}, isMale = {loadedIsMale}, skinId = {loadedSkinId}, isFirstGame = {loadedIsFirstGame}");
+
+                    // Устанавливаем флаг инициализации в true после успешной загрузки
+                    isInitialized = true;
+                }
+                else
+                {
+                    Debug.LogError("Ошибка: success = false. " + response.error);
                 }
             }
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError("❌ Ошибка при загрузке данных пользователя: " + ex.Message);
-        }
-        finally
-        {
-            if (connection != null && connection.State == System.Data.ConnectionState.Open)
-                connection.Close();
-        }
-    }
-
-    public void UpdateUserData(string id, int pirateCoins, int monkeyCoins, bool isMale, int skinId, bool isFirstGame)
-    {
-        try
-        {
-            connection = new MySqlConnection(connectionString);
-            connection.Open();
-            string query = @"UPDATE users 
-                            SET pirateCoins = @pirateCoins, 
-                                monkeyCoins = @monkeyCoins, 
-                                isMale = @isMale, 
-                                skinId = @skinId,
-                                isFirstGame = @isFirstGame
-                            WHERE id = @id";
-
-            using (MySqlCommand cmd = new MySqlCommand(query, connection))
+            catch (Exception ex)
             {
-                cmd.Parameters.AddWithValue("@id", id);
-                cmd.Parameters.AddWithValue("@pirateCoins", pirateCoins);
-                cmd.Parameters.AddWithValue("@monkeyCoins", monkeyCoins);
-                cmd.Parameters.AddWithValue("@isMale", isMale);
-                cmd.Parameters.AddWithValue("@skinId", skinId);
-                cmd.Parameters.AddWithValue("@isFirstGame", isFirstGame);
-
-                int rowsAffected = cmd.ExecuteNonQuery();
-                if (rowsAffected > 0)
-                    Debug.Log($"✅ Данные пользователя {id} обновлены в БД!");
-                else
-                    Debug.LogWarning($"⚠️ Пользователь {id} не найден для обновления.");
+                Debug.LogError("Ошибка парсинга загруженных данных: " + ex.Message);
             }
         }
-        catch (Exception ex)
+        else
         {
-            Debug.LogError("❌ Ошибка при обновлении данных пользователя: " + ex.Message);
-        }
-        finally
-        {
-            if (connection != null && connection.State == System.Data.ConnectionState.Open)
-                connection.Close();
+            Debug.LogError("❌ Ошибка загрузки данных: " + request.error);
         }
     }
 
-    private void OnDestroy()
+    // Обновление данных пользователя через API
+    public IEnumerator UpdateUserData(string id, int pirateCoins, int monkeyCoins, bool isMale, int skinId, bool isFirstGame)
     {
-        if (connection != null)
+        string url = baseUrl + "update_user_data.php";
+        WWWForm form = new WWWForm();
+        form.AddField("id", id);
+        form.AddField("pirateCoins", pirateCoins);
+        form.AddField("monkeyCoins", monkeyCoins);
+        form.AddField("isMale", isMale ? 1 : 0);
+        form.AddField("skinId", skinId);
+        form.AddField("isFirstGame", isFirstGame ? 1 : 0);
+
+        UnityWebRequest request = UnityWebRequest.Post(url, form);
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
         {
-            connection.Dispose();
+            Debug.Log("✅ " + request.downloadHandler.text);
         }
+        else
+        {
+            Debug.LogError("❌ Ошибка обновления данных: " + request.error);
+        }
+    }
+
+    [Serializable]
+    private class UserDataResponse
+    {
+        public bool success;
+        public UserData data;
+        public string error;
+    }
+
+    [Serializable]
+    private class UserData
+    {
+        public int pirateCoins;
+        public int monkeyCoins;
+        public bool isMale;
+        public int skinId;
+        public bool isFirstGame;
     }
 }

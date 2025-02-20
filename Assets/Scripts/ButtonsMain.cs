@@ -89,7 +89,7 @@ namespace Pinwheel.Jupiter
 
 
                 skinId = MySQLConnectorTG.loadedSkinId;
-                SetSkin(skinId);
+                SetSkinOnStart(skinId);
 
             }
 
@@ -345,6 +345,66 @@ namespace Pinwheel.Jupiter
             moveDuration = duration / moveSpeed;  // Умножаем на moveSpeed для регулировки скорости
             moveStartTime = Time.time;
             isMovingCamera = true;
+        }
+
+        public void SetSkinOnStart(int id)
+        {
+            if (Mail_Femail)
+            {
+
+                foreach (var obj in SkinsMaleObjects)
+                {
+                    obj.SetActive(false);
+                }
+                foreach (var obj in SkinsMaleObjectsNight)
+                {
+                    obj.SetActive(false);
+                }
+
+                if (!flipFlop_Day_night)
+                {
+                    SkinsMaleObjects[id].SetActive(true);
+
+                }
+                else
+                {
+                    SkinsMaleObjectsNight[id].SetActive(true);
+                }
+
+                Remy_day = SkinsMaleObjects[id];
+                Remy_night = SkinsMaleObjectsNight[id];
+
+                skinId = id;
+
+            }
+            else
+            {
+                foreach (var obj in SkinsFemaleObjects)
+                {
+                    obj.SetActive(false);
+                }
+                foreach (var obj in SkinsFemaleObjectsNight)
+                {
+                    obj.SetActive(false);
+                }
+
+                if (!flipFlop_Day_night)
+                {
+                    SkinsFemaleObjects[id].SetActive(true);
+                }
+                else
+                {
+                    SkinsFemaleObjectsNight[id].SetActive(true);
+                }
+
+                Female_day = SkinsFemaleObjects[id];
+                Female_night = SkinsFemaleObjectsNight[id];
+
+                skinId = id;
+            }
+
+
+
         }
 
         public void SetSkin(int id)
